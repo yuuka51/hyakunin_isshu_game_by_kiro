@@ -1,0 +1,542 @@
+/* =============================================
+   百人一首ゲーム - 和風デザインテーマ
+   Requirements: 7.1, 7.2, 7.3, 7.4
+   ============================================= */
+
+/* ----- CSS カスタムプロパティ（配色） ----- */
+:root {
+    --color-bg: #f5f0e8;
+    /* 背景: 生成り色 */
+    --color-bg-dark: #e8dfd2;
+    /* 背景（濃い目） */
+    --color-text: #3c2f2f;
+    /* テキスト: 焦げ茶 */
+    --color-text-light: #6b5b4f;
+    /* テキスト（薄め） */
+    --color-accent: #8b2500;
+    /* アクセント: 紅色 */
+    --color-accent-light: #c0392b;
+    /* アクセント（明るめ） */
+    --color-gold: #b8860b;
+    /* 金色 */
+    --color-gold-light: #daa520;
+    /* 金色（明るめ） */
+    --color-card-bg: #faf6ef;
+    /* カード背景: 鳥の子色 */
+    --color-card-border: #c4a882;
+    /* カード枠: 枯草色 */
+    --color-card-hover: #fff8ee;
+    /* カードホバー */
+    --color-correct: #2e7d32;
+    /* 正解: 緑 */
+    --color-correct-bg: #c8e6c9;
+    /* 正解背景 */
+    --color-incorrect: #c62828;
+    /* 不正解: 赤 */
+    --color-incorrect-bg: #ffcdd2;
+    /* 不正解背景 */
+    --color-header-bg: #3c2f2f;
+    /* ヘッダー背景 */
+    --color-header-text: #f5f0e8;
+    /* ヘッダーテキスト */
+
+    --font-family: 'Noto Serif JP', 'Yu Mincho', '游明朝', serif;
+    --border-radius: 6px;
+    --card-shadow: 0 2px 8px rgba(60, 47, 47, 0.15);
+    --card-shadow-hover: 0 4px 16px rgba(60, 47, 47, 0.25);
+    --transition-speed: 0.3s;
+}
+
+/* ----- リセットと基本スタイル ----- */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-family);
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    min-height: 100vh;
+    line-height: 1.6;
+}
+
+/* ----- アプリケーションコンテナ ----- */
+#app {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 16px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ----- ヘッダー ----- */
+#header {
+    background-color: var(--color-header-bg);
+    color: var(--color-header-text);
+    text-align: center;
+    padding: 16px 24px;
+    border-bottom: 3px solid var(--color-gold);
+    margin: 0 -16px;
+}
+
+#header h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    letter-spacing: 0.3em;
+}
+
+/* =============================================
+   スタート画面
+   ============================================= */
+#start-screen {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 16px;
+}
+
+.start-content {
+    text-align: center;
+    background-color: var(--color-card-bg);
+    border: 2px solid var(--color-card-border);
+    border-radius: var(--border-radius);
+    padding: 48px 40px;
+    box-shadow: var(--card-shadow);
+    max-width: 500px;
+    width: 100%;
+}
+
+.start-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-accent);
+    margin-bottom: 16px;
+    letter-spacing: 0.15em;
+}
+
+.start-description {
+    font-size: 1rem;
+    color: var(--color-text-light);
+    margin-bottom: 32px;
+    line-height: 1.8;
+}
+
+#start-btn,
+#replay-btn {
+    font-family: var(--font-family);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--color-header-text);
+    background-color: var(--color-accent);
+    border: none;
+    border-radius: var(--border-radius);
+    padding: 14px 48px;
+    cursor: pointer;
+    letter-spacing: 0.1em;
+    transition: background-color var(--transition-speed) ease,
+        transform var(--transition-speed) ease,
+        box-shadow var(--transition-speed) ease;
+    box-shadow: 0 2px 6px rgba(139, 37, 0, 0.3);
+}
+
+#start-btn:hover,
+#replay-btn:hover {
+    background-color: var(--color-accent-light);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(139, 37, 0, 0.4);
+}
+
+#start-btn:active,
+#replay-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 4px rgba(139, 37, 0, 0.3);
+}
+
+/* =============================================
+   ゲーム画面
+   ============================================= */
+#game-screen {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 20px 0;
+    gap: 20px;
+}
+
+/* ----- 読み札表示エリア ----- */
+#reading-card {
+    background: linear-gradient(135deg, var(--color-card-bg) 0%, #f0e8d8 100%);
+    border: 2px solid var(--color-gold);
+    border-radius: var(--border-radius);
+    padding: 24px 32px;
+    text-align: center;
+    box-shadow: var(--card-shadow);
+    position: relative;
+    overflow: hidden;
+}
+
+#reading-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--color-gold), var(--color-gold-light), var(--color-gold));
+}
+
+#reading-author {
+    font-size: 0.9rem;
+    color: var(--color-text-light);
+    margin-bottom: 8px;
+    letter-spacing: 0.1em;
+}
+
+#reading-verse {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-accent);
+    line-height: 1.8;
+    letter-spacing: 0.05em;
+}
+
+/* ----- スコアボード ----- */
+#score-board {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    flex-wrap: wrap;
+    background-color: var(--color-bg-dark);
+    border: 1px solid var(--color-card-border);
+    border-radius: var(--border-radius);
+    padding: 12px 24px;
+}
+
+#score-board span {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--color-text);
+    letter-spacing: 0.05em;
+}
+
+/* ----- ゲームフィールド（取り札グリッド） ----- */
+#game-field {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    padding: 8px 0;
+}
+
+/* ----- 取り札カード ----- */
+.grab-card {
+    background-color: var(--color-card-bg);
+    border: 2px solid var(--color-card-border);
+    border-radius: var(--border-radius);
+    padding: 16px 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 180px;
+    box-shadow: var(--card-shadow);
+    transition: transform var(--transition-speed) ease,
+        box-shadow var(--transition-speed) ease,
+        border-color var(--transition-speed) ease,
+        background-color var(--transition-speed) ease;
+    position: relative;
+    overflow: hidden;
+}
+
+/* 取り札の装飾ライン（上部） */
+.grab-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 8px;
+    right: 8px;
+    height: 2px;
+    background-color: var(--color-gold);
+    opacity: 0.5;
+}
+
+/* 取り札の装飾ライン（下部） */
+.grab-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 8px;
+    right: 8px;
+    height: 2px;
+    background-color: var(--color-gold);
+    opacity: 0.5;
+}
+
+/* 取り札テキスト（下の句 - 縦書き） Req 7.3 */
+.grab-card .card-text {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.8;
+    color: var(--color-text);
+    letter-spacing: 0.1em;
+    white-space: nowrap;
+}
+
+/* ----- 取り札ホバーエフェクト Req 7.4 ----- */
+.grab-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--card-shadow-hover);
+    border-color: var(--color-gold);
+    background-color: var(--color-card-hover);
+}
+
+/* ----- 正解フィードバック（緑ハイライト） ----- */
+.grab-card.correct {
+    background-color: var(--color-correct-bg);
+    border-color: var(--color-correct);
+    box-shadow: 0 0 12px rgba(46, 125, 50, 0.4);
+    animation: correctPulse 0.5s ease;
+}
+
+@keyframes correctPulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* ----- 不正解フィードバック（赤ハイライト） ----- */
+.grab-card.incorrect {
+    background-color: var(--color-incorrect-bg);
+    border-color: var(--color-incorrect);
+    box-shadow: 0 0 12px rgba(198, 40, 40, 0.4);
+    animation: incorrectShake 0.4s ease;
+}
+
+@keyframes incorrectShake {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    20% {
+        transform: translateX(-6px);
+    }
+
+    40% {
+        transform: translateX(6px);
+    }
+
+    60% {
+        transform: translateX(-4px);
+    }
+
+    80% {
+        transform: translateX(4px);
+    }
+}
+
+/* ----- カード除去アニメーション ----- */
+.grab-card.removing {
+    opacity: 0;
+    transform: scale(0.8);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+/* =============================================
+   ゲーム終了画面
+   ============================================= */
+#gameover-screen {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 16px;
+}
+
+.gameover-content {
+    text-align: center;
+    background-color: var(--color-card-bg);
+    border: 2px solid var(--color-gold);
+    border-radius: var(--border-radius);
+    padding: 48px 40px;
+    box-shadow: var(--card-shadow);
+    max-width: 500px;
+    width: 100%;
+}
+
+.gameover-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--color-accent);
+    margin-bottom: 24px;
+    letter-spacing: 0.15em;
+}
+
+#final-score {
+    font-size: 1.1rem;
+    color: var(--color-text);
+    margin-bottom: 32px;
+    line-height: 2;
+}
+
+#final-score .score-label {
+    font-weight: 700;
+    color: var(--color-accent);
+}
+
+/* =============================================
+   レスポンシブデザイン Req 7.2
+   ============================================= */
+
+/* タブレット（768px以下） */
+@media (max-width: 768px) {
+    #header h1 {
+        font-size: 1.5rem;
+    }
+
+    .start-title {
+        font-size: 1.6rem;
+    }
+
+    .start-content,
+    .gameover-content {
+        padding: 32px 24px;
+    }
+
+    #reading-card {
+        padding: 20px 24px;
+    }
+
+    #reading-verse {
+        font-size: 1.3rem;
+    }
+
+    #game-field {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+    }
+
+    .grab-card {
+        min-height: 160px;
+        padding: 14px 6px;
+    }
+
+    .grab-card .card-text {
+        font-size: 0.9rem;
+    }
+
+    #score-board {
+        gap: 16px;
+        padding: 10px 16px;
+    }
+
+    #score-board span {
+        font-size: 0.85rem;
+    }
+}
+
+/* スマートフォン（480px以下） */
+@media (max-width: 480px) {
+    html {
+        font-size: 14px;
+    }
+
+    #header h1 {
+        font-size: 1.3rem;
+        letter-spacing: 0.2em;
+    }
+
+    .start-title {
+        font-size: 1.4rem;
+    }
+
+    .start-content,
+    .gameover-content {
+        padding: 24px 16px;
+    }
+
+    #reading-card {
+        padding: 16px;
+    }
+
+    #reading-verse {
+        font-size: 1.1rem;
+    }
+
+    #game-field {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+    }
+
+    .grab-card {
+        min-height: 140px;
+        padding: 12px 4px;
+    }
+
+    .grab-card .card-text {
+        font-size: 0.85rem;
+    }
+
+    #score-board {
+        gap: 12px;
+        padding: 8px 12px;
+    }
+
+    #score-board span {
+        font-size: 0.8rem;
+    }
+
+    #start-btn,
+    #replay-btn {
+        padding: 12px 36px;
+        font-size: 1rem;
+    }
+}
+
+/* =============================================
+   エラー表示
+   ============================================= */
+.error-message {
+    text-align: center;
+    padding: 24px;
+    color: var(--color-incorrect);
+    font-size: 1rem;
+}
+
+.error-message button {
+    font-family: var(--font-family);
+    font-size: 0.9rem;
+    color: var(--color-header-text);
+    background-color: var(--color-accent);
+    border: none;
+    border-radius: var(--border-radius);
+    padding: 10px 24px;
+    cursor: pointer;
+    margin-top: 16px;
+    transition: background-color var(--transition-speed) ease;
+}
+
+.error-message button:hover {
+    background-color: var(--color-accent-light);
+}
